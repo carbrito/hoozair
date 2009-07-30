@@ -10,6 +10,9 @@ module NavigationHelpers
     
     when /the homepage/
       '/'
+    when /the new user_list page/
+      new_user_list_path
+
     
     # Add more mappings here.
     # Here is a more fancy example:
