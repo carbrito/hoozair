@@ -11,17 +11,30 @@ describe VisitorsController do
     user_name = 'ignu'
     channel = 'home'
 
+    response = nil
+
     before(:each) do
       visitor = mock_model(Visitor);
       other_visitors = mock_model(Array)
+
+
       Visitor.should_receive(:find_or_create_by_username).with(user_name).and_return(visitor)
+      visitor.should_receive(:channel=).with('home')
       visitor.should_receive(:save!)
       Visitor.should_receive(:find_by_channel).with(channel).and_return(other_visitors)
-      other_visitors.should_receive(:to_json)
-      post(:ping, {:user_name =>user_name, :channel => channel})
+      other_visitors.should_receive(:to_json).and_return(["Ignu", "Fred"])
+      response = post(:ping, {:user_name =>user_name, :channel => channel})
     end
 
-    should_respond_with_content_type :json      
+    it "should respond with a json version of the current visitors" do
+      response.content_type.should == 'application/json'
+      response.body.should match "Ignu"
+      response.body.should match "Fred"
+    end
+
+    # TODO: why doesn't this work'
+    # should_respond_with_content_type(:rss)
+    #should_respond_with_content_type :json
 
 end
 
