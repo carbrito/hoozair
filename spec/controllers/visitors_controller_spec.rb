@@ -8,7 +8,7 @@ describe VisitorsController do
   end
 
   describe "when pinged by a user"
-    user_name = 'ignu'
+    username = 'ignu'
     channel = 'home'
 
     response = nil
@@ -18,12 +18,12 @@ describe VisitorsController do
       other_visitors = mock_model(Array)
 
 
-      Visitor.should_receive(:find_or_create_by_username).with(user_name).and_return(visitor)
+      Visitor.should_receive(:find_or_create_by_username).with(username).and_return(visitor)
       visitor.should_receive(:channel=).with('home')
       visitor.should_receive(:save!)
-      Visitor.should_receive(:find_by_channel).with(channel).and_return(other_visitors)
+      Visitor.should_receive(:find_all_by_channel).with(channel).and_return(other_visitors)
       other_visitors.should_receive(:to_json).and_return(["Ignu", "Fred"])
-      response = post(:ping, {:user_name =>user_name, :channel => channel})
+      response = post(:ping, {:username =>username, :channel => channel})
     end
 
     it "should respond with a json version of the current visitors" do

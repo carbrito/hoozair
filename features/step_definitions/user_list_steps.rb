@@ -4,6 +4,8 @@ def ping(username, channel)
 end
 
 Given /^the following users view '(.*)'$/ do |page, table|
+  
+  Visitor.delete_all
   @page = page
   @current_users = table
 
@@ -13,16 +15,11 @@ Given /^the following users view '(.*)'$/ do |page, table|
 end
 
 When /^I request users viewing '(.*)'$/ do |page|
-  puts "doin' the request"
   @users = ping 'me', page
-  puts @users.inspect
-  puts @users -1  # gah, why is this 200
 end
 
 Then /^the following users are returned$/ do |table|
-
-  
    @current_users.hashes.each do |user|
-    false.should == true
+    response.body.should match user[:name]
    end
 end
