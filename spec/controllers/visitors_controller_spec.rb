@@ -16,11 +16,13 @@ describe VisitorsController do
     before(:each) do
       visitor = mock_model(Visitor);
       other_visitors = mock_model(Array)
-
-
       Visitor.should_receive(:find_or_create_by_username).with(username).and_return(visitor)
+      @now = Time.now
+      Time.should_receive(:current).and_return(@now)
       visitor.should_receive(:channel=).with('home')
+      visitor.should_receive(:created_at=).with(@now)
       visitor.should_receive(:save!)
+      Visitor.should_receive(:delete_all).with("created_at < '#{(@now - 60).to_s}'")
       Visitor.should_receive(:find_all_by_channel).with(channel).and_return(other_visitors)
       other_visitors.should_receive(:to_json).and_return(["Ignu", "Fred"])
       response = post(:ping, {:username =>username, :channel => channel})
