@@ -18,7 +18,7 @@ And /^'(.*)' is idle after viewing '(.*)'$/ do |user, page|
   visitor = Visitor.new
   visitor.username = user
   visitor.channel = page
-  visitor.updated_at = Time.now - 60 * 5  #5 minutes
+  visitor.created_at = Time.now - 60 * 5  #5 minutes
   visitor.save!
 end
 
