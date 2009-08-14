@@ -14,3 +14,25 @@ Scenario: View other users on my current page
     | name      |
     | Megatron  |
     | Soundwave |
+
+
+
+  Given 'Optimus' is idle after viewing 'home.aspx'
+  And the following users view 'home.aspx'
+    | name  |
+    | Fred  |
+  And the following users view 'home.aspx'
+    | name  |
+    | Fred  |
+  And the following users view 'contact.aspx'
+    | name     | 
+    | Goldbug  |
+  When I request users viewing 'home.aspx'
+  Then the following users are returned
+    | name     | 
+    | Fred     |
+  And the following users are not returned
+    | name      |
+    | Optimus   |
+    | Goldbug   |
+
