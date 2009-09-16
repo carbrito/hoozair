@@ -17,3 +17,8 @@ In a web application that doesn't employ any sort of locking strategy, it might 
   channel  - possibly the page name or record id of the item being viewed
   domain   - 'http://localhost:3000' when developing locally
   target   - the target html element to put the user_list div in.  if none is provided, it defaults to body
+
+== TODO
+* timeout due to inactivity 
+* show idle status
+* allow messaging
