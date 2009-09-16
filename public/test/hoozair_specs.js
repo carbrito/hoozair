@@ -35,6 +35,17 @@
 				after_ajax_callback_with([{visitor:{username:'ignu'}}]);
 				expect(utilities.setTimeout).to(have_been_called_with, [hoozair.ping, hoozair.timeout]); 
 			});
+			
+			it("should update the display with every username besides the one logged in", function() { 
+				Screw.Mock(hoozair, "clear_users");
+				Screw.Mock(hoozair, "add_user");
+				var me = {username:'ignu'};
+				var other_user = {username:'fred'};
+				after_ajax_callback_with([{visitor:me}, {visitor:other_user}]);
+				expect(hoozair.clear_users).to(have_been_called);
+				expect(hoozair.add_user).to(have_been_called_with, [other_user]);
+				expect(hoozair.add_user).to_not(have_been_called_with, [me]);
+			});
 		})
 	});
 });
