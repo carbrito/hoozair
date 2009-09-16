@@ -1,13 +1,15 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 var Hoozair = function(username, channel, domain){
-	var timeout = 500;
+	var self = {};
+	self.timeout = 2000;
 	var url = domain + '/visitors/ping/'
-	var self = {}
+	
 	
 	var process_ping = function(data) {
+		console.log("processing ping.")
+		utilities.setTimeout(self.ping, self.timeout);
 		update_user_list(data);
-		setTimeout(self.ping, 2000);
 	};
 	
 	var create_user_list = function() {
@@ -17,20 +19,29 @@ var Hoozair = function(username, channel, domain){
 	
 	var update_user_list = function(users) {
 		$.each(users, function() {
-			console.log(this.visitor.username);
+			var visitor = this.visitor
+			console.log(visitor.username + '.' + visitor.id + '.' + visitor.channel);
 		});
 	}
 	
 	self.ping = function() {
 		$.ajax({
 			type:"POST",
-			data:{username:username, channel:channel}, 
-			success: process_ping, 
 			url:url, 
-			dataType:'json'
+			dataType:'json',
+			data:{ username:username, channel:channel}, 
+			success: process_ping
 		});
 	}
 	
-	setTimeout(self.ping, 100);
+	self.start = function() {
+		self.ping();
+	};
 	return self;
 };
+
+var utilities = {
+	setTimeout: function(callback, timeout) {
+		setTimeout(callback, timeout);
+	}
+}
